@@ -1,16 +1,13 @@
-from flask import Flask, redirect, request
+import os
+from flask import Flask,redirect
 
 app = Flask(__name__)
 
-from urllib.parse import urlparse, urlunparse
+@app.route('/')
+def hello():
+    return redirect("https://www.resumonk.com/gJo0binaSmO4MZ50xDj7Dw", code=302)
 
-FROM_DOMAIN = "resume.chancecallahan.com"
-TO_DOMAIN = "www.resumonk.com/gJo0binaSmO4MZ50xDj7Dw"
-
-@app.before_request
-def redirect_to_new_domain():
-    urlparts = urlparse(request.url)
-    if urlparts.netloc == FROM_DOMAIN:
-        urlparts_list = list(urlparts)
-        urlparts_list[1] = TO_DOMAIN
-        return redirect(urlunparse(urlparts_list), code=301)
+if __name__ == '__main__':
+    # Bind to PORT if defined, otherwise default to 5000.
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
